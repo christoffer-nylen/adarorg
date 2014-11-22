@@ -1,0 +1,42 @@
+Context contains the requested unit: expr_9
+
+Processing Unit: Expr_9
+
+Entering predicate...
+------------------------------------------------------------
+Predicate: (A and B) or (C and E) or (B and F)
+------------------------------------------------------------
+Test_Set 1:00000=0
+Test_Set 2:00001=0
+Test_Set 3:00010=0
+Test_Set 4:00011=1
+Test_Set 5:00100=0
+Test_Set 6:00101=0
+Test_Set 7:00110=0
+Test_Set 8:00111=1
+Test_Set 9:01000=0
+Test_Set 10:01001=0
+Test_Set 11:01010=0
+Test_Set 12:01011=1
+Test_Set 13:01100=1
+Test_Set 14:01101=1
+Test_Set 15:01110=1
+Test_Set 16:01111=1
+Test_Set 17:10000=0
+Test_Set 18:10001=0
+Test_Set 19:10010=1
+Test_Set 20:10011=1
+Test_Set 21:10100=0
+Test_Set 22:10101=0
+Test_Set 23:10110=1
+Test_Set 24:10111=1
+Test_Set 25:11000=0
+Test_Set 26:11001=0
+Test_Set 27:11010=1
+Test_Set 28:11011=1
+Test_Set 29:11100=1
+Test_Set 30:11101=1
+Test_Set 31:11110=1
+Test_Set 32:11111=1
+Leaving Predicate...
+

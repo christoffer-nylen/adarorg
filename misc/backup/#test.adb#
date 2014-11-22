@@ -1,0 +1,27 @@
+if not X then
+   if not X then
+      if X then
+	 Do_Leaf_Stuff;
+      end if;
+   else
+      if not X then
+	 Do_Leaf_Stuff;
+      else
+	 Do_Leaf_Stuff;
+      end if;
+   end if;
+else
+   if not X then
+      if not X then
+	 Do_Leaf_Stuff;
+      else
+	 Do_Leaf_Stuff;
+      end if;
+   else
+      if not X then
+	 Do_Leaf_Stuff;
+      else
+	 Do_Leaf_Stuff;
+      end if;
+   end if;
+end if;

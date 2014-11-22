@@ -1,0 +1,46 @@
+In Ada 83, you use packed arrays of Boolean or call a small C or
+assembler operation. In Ada 95, in addition to this, you can use modular
+types.
+
+function "and" (Left : Integer; Right : Integer) return Integer;
+-- Returns the bitwise logical and of Left and Right.
+
+-- Ada 83:
+function "and" (Left : Integer; Right : Integer) return Integer is
+type Bit_Set is array (1 .. Integer'Size) of Boolean;
+pragma Pack (Bit_Set);
+
+function To_Bit is new Unchecked_Conversion
+(Source => Integer, Target => Bit_Set);
+function To_Integer is new Unchecked_Conversion
+(Source => Bit_Set, Target => Integer);
+
+LB : constant Bit_Set := To_Bit (Left);
+RB : constant Bit_Set := To_Bit (Right);
+begin -- "and"
+return To_Integer (LB and RB);
+end "and";
+
+Note the the language does not define whether LB (LB'First) is the LSB
+or MSB of Left.
+
+-- Ada 95:
+function "and" (Left : Integer; Right : Integer) return Integer is
+type Mod_Int is mod 2 ** Integer'Size;
+
+function To_Mod is new Ada.Unchecked_Conversion
+(Source => Integer, Target => Mod_Int);
+funtion To_Integer is new Ada.Unchecked_Conversion
+(Source => Mod_Int, Target => Integer);
+
+LM : constant Mod_Int := To_Mod (Left);
+RM : constant Mod_Int := To_Mod (Right);
+begin -- "and"
+return To_Integer (LM and RM);
+end "and";
+
+--
+Jeff Carter
+"I'm a lumberjack and I'm OK."
+Monty Python's Flying Circus
+54

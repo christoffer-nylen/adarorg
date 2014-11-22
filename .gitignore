@@ -1,0 +1,10 @@
+*coverage.dat
+*.adt
+*.ror
+filelist.dat
+*.o
+*.ali
+b~*
+*~
+
+bin/
