@@ -3,8 +3,7 @@ with
 
 with
   Adarorg_Constants,
-  Binary_Tree,
-  Statistics;
+  Binary_Tree;
 use
   Adarorg_Constants;
 

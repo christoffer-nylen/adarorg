@@ -180,7 +180,6 @@ package body Element_Processing is
             procedure Build_Test_Coverage_Tree is new Determining_Test_Set.Test_Pairs.Iterate(Instrumentation.Add_Test_Coverage);
          begin
             Predicate_Analysis.Identify_Test_Set(Predicate_Pairs);
-            Statistics.Add_Predicate(Expr, Determining_Test_Set.Test_Pairs.Length(Predicate_Pairs));
             if Determining_Test_Set.Test_Pairs.Length(Predicate_Pairs)>0 then
                Instrumentation.Clear;
                Build_Test_Coverage_Tree(Predicate_Pairs);

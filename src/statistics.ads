@@ -10,13 +10,13 @@ package Statistics is
                                         Relops_Tested => 0,
                                         Predicates_Total => 0,
                                         Predicates_Tested => 0);
-   Predicate_Expression : Asis.Expression;
 
    procedure Process_Condition_Expression (Expr : in Asis.Expression);
+
+   procedure Process_Application_Unit(Unit_Name : in Wide_String); --TODO: Change to process compilation_unit or something?
 
    procedure Post_Process_Application_Unit;
 
    procedure Post_Process_Expression(Expr : in Asis.Expression);
 
-   procedure Add_Predicate(Expr : in Asis.Expression; Determining_Clauses : in Natural);
 end Statistics;

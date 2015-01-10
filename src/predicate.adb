@@ -13,7 +13,8 @@ with
 
 --RORG
 with
-  Predicate_Queries;
+  Predicate_Queries,
+  Statistics;
 
 package body Predicate is
 
@@ -45,9 +46,9 @@ package body Predicate is
       return Data.Absolute_Id /= NO_ID;
    end Has_Id;
 
-   procedure Generate_Id(Data : in out Clause_Information) is
+   procedure Generate_Id(Data : in out Clause_Information) is --TODO: take number as argument and rename to assign_id
    begin
-      Statistics.Data.Relops_Tested := Statistics.Data.Relops_Tested+1;
+      Statistics.Data.Relops_Tested := Statistics.Data.Relops_Tested+1; --TODO:move statictis use to predicate_analysis
       Data.Absolute_Id := Statistics.Data.Relops_Tested;
    end Generate_Id;
 

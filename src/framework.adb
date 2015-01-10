@@ -210,6 +210,7 @@ package body Framework is
       Control : Asis.Traverse_Control := Asis.Continue;
       State   : Boolean := True;
    begin
+      Statistics.Process_Application_Unit(Adarorg_Options.Get_Unit_Name); --TODO: Change to actual compilation unit
       Instrumentation.Input_File_Name(Adarorg_Options.Path_And_Unit_Name);
       Instrumentation.Generate_With_Clause;
 
