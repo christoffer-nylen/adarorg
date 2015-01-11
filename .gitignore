@@ -1,10 +1,29 @@
-*coverage.dat
-*.adt
-*.ror
-filelist.dat
-*.o
+##############################
+# Files produced by compiler #
+##############################
+# ignore Ada library information
 *.ali
+# ignore Ada tree files
+*.adt
+# ignore compiled object files
+*.o
+# ignore binder files
 b~*
-*~
-
+# ignore all files in the bin/ directory
 bin/
+
+###############################
+# AdaRORG stuff to be ignored #
+###############################
+# ignore instrumented files
+*.ror
+# ignore accumulated coverage data
+*coverage.dat
+# ignore list of files
+filelist.dat
+
+###############
+# Additionals #
+###############
+# Ignore temp files
+*~
