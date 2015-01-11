@@ -45,11 +45,6 @@ package body Element_Processing is
    ------------------------------------------------------------------
    --                      PRE PROCESSING                          --
    ------------------------------------------------------------------
-   procedure Post_Process_For_Loop_Statement is
-   begin
-      null;
-   end Post_Process_For_Loop_Statement;
-
    procedure Process_Identifier (Ident : in Asis.Expression) is
       use Asis, Asis.Declarations, Asis.Elements, Asis.Expressions;
       use Utilities;
@@ -132,15 +127,6 @@ package body Element_Processing is
       Enter_Complicated_Clause;
    end Process_Complicated_Element;
 
-   procedure Post_Process_Complicated_Element is
-   begin
-      if not Inside_A_Predicate then
-         return;
-      end if;
-
-      Leaving_Complicated_Clause;
-   end Post_Process_Complicated_Element;
-
    procedure Process_Condition_Expression (Expr : in Asis.Expression) is
       use Asis, Asis.Elements;
       use Utilities;
@@ -153,6 +139,20 @@ package body Element_Processing is
    ------------------------------------------------------------------
    --                      POST PROCESSING                         --
    ------------------------------------------------------------------
+   procedure Post_Process_For_Loop_Statement is
+   begin
+      null;
+   end Post_Process_For_Loop_Statement;
+
+   procedure Post_Process_Complicated_Element is
+   begin
+      if not Inside_A_Predicate then
+         return;
+      end if;
+
+      Leaving_Complicated_Clause;
+   end Post_Process_Complicated_Element;
+
    procedure Post_Process_Expression(Expr : in Asis.Expression) is
       use Asis.Elements;
       use Predicate.Predicate_Tree;

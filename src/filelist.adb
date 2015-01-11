@@ -15,7 +15,7 @@ use
 
 package body Filelist is
 
-   The_File : Ada.Streams.Stream_Io.File_Type;
+   The_File   : Ada.Streams.Stream_Io.File_Type;
    The_Stream : Ada.Streams.Stream_IO.Stream_Access;
 
    function Is_Equal(A, B : Instrumented_File) return Boolean is
@@ -32,7 +32,8 @@ package body Filelist is
       use Ada.Streams.Stream_Io;
    begin
       -- Open filelist.dat
-      Open(File => The_File, Mode => In_File,
+      Open(File => The_File,
+           Mode => In_File,
            Name => Ada.Characters.Handling.To_String("filelist.dat"));
       The_Stream := Stream(The_File);
    end Open_Filelist;
@@ -57,17 +58,19 @@ package body Filelist is
       use Ada.Characters.Handling;
       use Ada.Streams.Stream_Io;
 
-      Tmp_File : Ada.Streams.Stream_Io.File_Type;
-      Tmp_Stream : Ada.Streams.Stream_IO.Stream_Access;
-      Tmp_Data : Instrumented_File;
+      Tmp_File    : Ada.Streams.Stream_Io.File_Type;
+      Tmp_Stream  : Ada.Streams.Stream_IO.Stream_Access;
+      Tmp_Data    : Instrumented_File;
       Was_Written : Boolean := False;
+
    begin
       begin
          -- Open filelist.dat
          Open_Filelist;
 
          -- Create or Replace filelist.dat~
-         Create(File => Tmp_File, Name => To_String("filelist.dat~"));
+         Create(File => Tmp_File,
+                Name => To_String("filelist.dat~"));
          Tmp_Stream := Stream(Tmp_File);
 
          -- Write filelist.dat + Updates to tmp-filelist
@@ -85,10 +88,12 @@ package body Filelist is
          Close_Filelist;
          Close(Tmp_File);
 
-         Open(File => Tmp_File, Mode => In_File,
+         Open(File => Tmp_File,
+              Mode => In_File,
               Name => To_String("filelist.dat~"));
          Tmp_Stream := Stream(Tmp_File);
-         Open(File => The_File, Mode => Out_File,
+         Open(File => The_File,
+              Mode => Out_File,
               Name => To_String("filelist.dat"));
          The_Stream := Stream(The_File);
          while not Ada.Streams.Stream_IO.End_Of_File(Tmp_File) loop

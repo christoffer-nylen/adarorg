@@ -123,8 +123,8 @@ package body Predicate_Analysis is
          if Determining_Clauses>0 then
             declare
                Test_Set : constant Determining_Test_Set.Test_Pair := (To_Integer(Predicate1),
-                                                             Determining_Clauses,
-                                                             P1_Outcome);
+                                                                      Determining_Clauses,
+                                                                      P1_Outcome);
             begin
                Determining_Test_Set.Test_Pairs.Push(Test_Set, Predicate_Pairs);
                Put("Test_Set:" & Bit_Set'Wide_Image(Predicate1) & ", Determining:");-- & Bit_Set'Wide_Image(Determining_Clauses) & ":");

@@ -19,12 +19,13 @@ package body Rorg is
       use Ada.Characters.Handling;
       use Ada.Streams.Stream_Io;
 
-      The_File : Ada.Streams.Stream_Io.File_Type;
+      The_File   : Ada.Streams.Stream_Io.File_Type;
       The_Stream : Ada.Streams.Stream_IO.Stream_Access;
    begin
       --coverage.dat
       begin
-         Open(File => The_File, Mode => In_File,
+         Open(File => The_File,
+              Mode => In_File,
               Name => To_String(Coverage_Data_File_Name));
          The_Stream := Stream(The_File);
          declare
@@ -42,11 +43,13 @@ package body Rorg is
             end loop;
          end;
          Close(The_File);
-         Open(File => The_File, Mode => Out_File,
+         Open(File => The_File,
+              Mode => Out_File,
               Name => To_String(Coverage_Data_File_Name));
       exception
          when others =>
-            Create(File => The_File, Name => To_String(Coverage_Data_File_Name));
+            Create(File => The_File,
+                   Name => To_String(Coverage_Data_File_Name));
       end;
       The_Stream := Stream(The_File);
       Coverage_Data'Class'Output(The_Stream, Stored_Data);

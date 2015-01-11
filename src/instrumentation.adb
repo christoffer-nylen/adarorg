@@ -8,7 +8,7 @@
 ----------------------------------------------------------------------
 
 -- TODO: The code in this file is horrible,
---       it will be reimplemented later..
+--       it will be refactorized later..
 
 -- Asis
 with
@@ -46,7 +46,7 @@ with
 package body Instrumentation is
    Test_Covered : array ( Positive range 1..2**PREDICATE_SIZE) of Boolean;
 
-   File_Name : String_Type(1..100);
+   File_Name        : String_Type(1..100);
    File_Name_Length : Positive;
 
    --Previous_In_Stream, Previous_Out_Stream : File_Type;
@@ -54,7 +54,7 @@ package body Instrumentation is
 
    type Text_Position is
       record
-         Line : Text_Line_Number;
+         Line   : Text_Line_Number;
          Column : Text_Column_Number;
       end record;
 
@@ -64,7 +64,7 @@ package body Instrumentation is
    type Rorg_Marked_Expression is
       record
          Expression : Asis.Expression;
-         Id : Natural;
+         Id         : Natural;
       end record;
 
    package Marked_Expressions is new Stack_Array(Rorg_Marked_Expression);
@@ -181,8 +181,8 @@ package body Instrumentation is
       --function Adarorg_Options.Get_Unit_Name return Wide_String renames U_Name;
       --function Adarorg_Options.Get_Path_And_Unit_Name return Wide_String renames F_Name;
 
-      U_Name : Wide_String(1..100);
-      F_Name : Wide_String(1..100);
+      U_Name  : Wide_String(1..100);
+      F_Name  : Wide_String(1..100);
       FL_Data : Instrumented_File;
    begin
       Set_Streams;
@@ -382,8 +382,8 @@ package body Instrumentation is
          use Ada.Strings, Ada.Strings.Wide_Fixed;
          use Asis.Text;
 
-         Expr : constant Asis.Expression := Marked_Expressions.Peek(Predicate_Expressions).Expression;
-         Expr_Span : constant Span := Element_Span(Expr);
+         Expr       : constant Asis.Expression := Marked_Expressions.Peek(Predicate_Expressions).Expression;
+         Expr_Span  : constant Span := Element_Span(Expr);
          Text_Lines : constant Line_List := Lines(Expr);
 
          procedure Generate_Parameters is
@@ -480,7 +480,7 @@ package body Instrumentation is
 
          procedure Generate_Additional_Info is
             use Predicate_Queries;
-            Clause_Node : Predicate.Predicate_Tree.Node_Access;
+            Clause_Node  : Predicate.Predicate_Tree.Node_Access;
             Put_Headline : Boolean := True;
             procedure Put_Clause(Data : Predicate.Clause_Information) is
             begin
@@ -601,7 +601,7 @@ package body Instrumentation is
                      Generate_Type(Node.Right);
                   when A_Function_Call =>
                      declare
-                        Decl : constant Asis.Declaration := Corresponding_Called_Function(Node.Data.Element);
+                        Decl   : constant Asis.Declaration := Corresponding_Called_Function(Node.Data.Element);
                         Result : constant Asis.Element := Result_Profile(Decl);
                      begin
                         Put(Trim(Element_Image(Result), Both));

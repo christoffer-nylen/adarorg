@@ -22,15 +22,15 @@ package body Rorg.Report is
       use Filelist;
 
       File_Handle : File_Type;
-      Passed : Natural;
+      Passed      : Natural;
 
       Now : constant Time := Clock;
 
       Has_Passed : Boolean;
 
       Instrumentation_Data : Instrumented_File;
-      Offset_First : Natural := 1;
-      Offset_Last : Natural := 0;
+      Offset_First         : Natural := 1;
+      Offset_Last          : Natural := 0;
 
       procedure Put_Header is
       begin
