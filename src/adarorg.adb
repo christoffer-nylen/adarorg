@@ -18,11 +18,34 @@ with
   Adarorg_Options,
   Framework;
 
+-- Ada
+with
+  Ada.Command_Line,
+  Ada.Characters.Handling,
+  Ada.Strings.Wide_Unbounded,
+  Ada.Wide_Text_Io;
+use
+  Ada.Wide_Text_Io;
+
+
 procedure Adarorg is
+   File_Not_Specified : exception;
+   Extra_Options : Ada.Strings.Wide_Unbounded.Unbounded_Wide_String;
 begin
    Asis.Implementation.Initialize;
 
-   Adarorg_Options.Initialize;
+   if Ada.Command_Line.Argument_Count=0 then
+      Put_Line ("Please specify ada file");
+      raise File_Not_Specified;
+      return;
+   end if;
+
+   for Arg in 2 .. Ada.Command_Line.Argument_Count loop
+      Ada.Strings.Wide_Unbounded.Append(Extra_Options, ' ' &
+                                          Ada.Characters.Handling.To_Wide_String(Ada.Command_Line.Argument(Arg)));
+   end loop;
+
+   Adarorg_Options.Initialize(Ada.Command_Line.Argument(1));
 
    --if Unit_Name_Length=0 then
    --   Put_Line ("Type the name of an Ada package specification");
@@ -38,7 +61,9 @@ begin
    --  associated with the Context.
    --  I<dir>: Defines the directory in which to search for source files
    --  when compiling sources to create a tree "on the fly".
-   Asis.Ada_Environments.Associate (Framework.Adarorg_Context, "My Context", "-CA -FS -I" & Adarorg_Options.Get_Path_Name &" "&Adarorg_Options.Command_Line_Options);
+   Asis.Ada_Environments.Associate (Framework.Adarorg_Context, "My Context", "-CA -FS -I" &
+                                      Adarorg_Options.Get_Path_Name & " " &
+                                      Ada.Strings.Wide_Unbounded.To_Wide_String(Extra_Options));
                                     --"-CA -FS -I/sw/adatest95/2.0/AdaTEST95/2.0/lib/adatest/ -I"&Framework.Path_Name(1..Framework.Path_Name_Length));
    Asis.Ada_Environments.Open (Framework.Adarorg_Context);
 

@@ -28,13 +28,15 @@ with
 -- AdaRORG
 with
   Adarorg_Constants,
+  Adarorg_Constants.Asis_Types,
   Adarorg_Options,
   Element_Processing,
   Instrumentation,
   Predicate_Loop_Variables, --TODO: Fix this
   Statistics;
 use
-  Adarorg_Constants;
+  Adarorg_Constants,
+  Adarorg_Constants.Asis_Types;
 
 package body Framework is
 
@@ -87,6 +89,13 @@ package body Framework is
                   Element_Processing.Process_Identifier (Element);
                when An_Operator_Symbol =>
                   Element_Processing.Process_Operator (Element);
+                  case Operator_Kind (Element) is
+                     when A_Relational_Operator =>
+                        --If problematic, move back to active_clauses.adb:133: when A_Relational_Operator
+                        Statistics.Process_Relational_Operator (Element);
+                     when others =>
+                        null;
+                  end case;
                when A_Function_Call =>
                   if Is_Prefix_Call(Element) then
                      Element_Processing.Process_Complicated_Element(Element);
@@ -94,27 +103,31 @@ package body Framework is
                when An_Indexed_Component =>
                   Element_Processing.Process_Complicated_Element(Element);
                when A_Slice =>
-                  null;
+                  Element_Processing.Process_Complicated_Element(Element);
                when A_Selected_Component =>
+                  --TODO: check is selected component is constant boundary value
+                  --      process/push child instead?
                   Element_Processing.Process_Complicated_Element(Element);
                when An_Attribute_Reference =>
                   Element_Processing.Process_Complicated_Element(Element);
                when A_Named_Array_Aggregate =>
-                  Control := Asis.Abandon_Children;
-               when An_And_Then_Short_Circuit =>
-                  Trace("rorg_analysis.adb : Short_Circuit: ", Element);
-                  Control := Asis.Abandon_Children;
-               when An_Or_Else_Short_Circuit =>
-                  Trace("rorg_analysis.adb : Short_Circuit: ", Element);
-                  Control := Asis.Abandon_Children;
+                  Element_Processing.Process_Complicated_Element(Element);
+               when An_And_Then_Short_Circuit | An_Or_Else_Short_Circuit =>
+                  Element_Processing.Process_Complicated_Element(Element);
+               when An_In_Membership_Test | A_Not_In_Membership_Test =>
+                  Element_Processing.Process_Complicated_Element(Element);
+               when A_Null_Literal =>
+                  --TODO: Foo > Null is never possible! This will be a false-positive
+                  Element_Processing.Process_Literal (Element);
                when A_Parenthesized_Expression =>
                   null;
                when A_Type_Conversion =>
-                  Control := Asis.Abandon_Children;
+                  Element_Processing.Process_Complicated_Element(Element);
                when A_Qualified_Expression =>
-                  Control := Asis.Abandon_Children;
+                  Element_Processing.Process_Complicated_Element(Element);
                when others =>
-                  null;
+                  Element_Processing.Process_Unknown_Element(Element);
+                  Trace("framework.adb : Wierd stuff: ", Element);
             end case;
          when A_Path =>
             case Path_Kind (Element) is
@@ -168,6 +181,16 @@ package body Framework is
             end case;
          when An_Expression =>
             case Expression_Kind (Element) is
+               when An_Integer_Literal |
+                 A_Real_Literal |
+                 A_String_Literal |
+                 A_Character_Literal |
+                 An_Enumeration_Literal =>
+                  null;
+               when An_Identifier =>
+                  null;
+               when An_Operator_Symbol =>
+                  null;
                when A_Function_Call =>
                   if Is_Prefix_Call(Element) then
                      Element_Processing.Post_Process_Complicated_Element;
@@ -176,17 +199,30 @@ package body Framework is
                   end if;
                when An_Indexed_Component =>
                   Element_Processing.Post_Process_Complicated_Element;
+               when A_Slice =>
+                  Element_Processing.Post_Process_Complicated_Element;
                when A_Selected_Component =>
                   Element_Processing.Post_Process_Complicated_Element;
                when An_Attribute_Reference =>
                   Element_Processing.Post_Process_Complicated_Element;
+               when A_Named_Array_Aggregate =>
+                  Element_Processing.Post_Process_Complicated_Element;
+               when An_And_Then_Short_Circuit | An_Or_Else_Short_Circuit =>
+                  Element_Processing.Post_Process_Complicated_Element;
+               when An_In_Membership_Test | A_Not_In_Membership_Test =>
+                  Element_Processing.Post_Process_Complicated_Element;
+               when A_Null_Literal =>
+                  null;
                when A_Parenthesized_Expression =>
                   Element_Processing.Post_Process_Parenthesis(Element);
+               when A_Type_Conversion =>
+                  Element_Processing.Post_Process_Complicated_Element;
+               when A_Qualified_Expression =>
+                  Element_Processing.Post_Process_Complicated_Element;
                when others =>
                   null;
             end case;
             Element_Processing.Post_Process_Expression(Element);
-            Statistics.Post_Process_Expression (Element);
          when A_Statement =>
             case Statement_Kind (Element) is
                when An_If_Statement =>
@@ -278,6 +314,7 @@ package body Framework is
    if Asis.Compilation_Units.Is_Nil ( Subject_Unit ) then
       Put (CONTEXT_UNIT_NOT_FOUND_MESSAGE);
       Put_Line(Adarorg_Options.Get_Unit_Name);
+      --raise CONTEXT_UNIT_NOT_FOUND;
    else
       Put (CONTEXT_UNIT_FOUND_MESSAGE);
       Put (Adarorg_Options.Get_Unit_Name);

@@ -8,10 +8,9 @@
 ----------------------------------------------------------------------
 
 package Adarorg_Options is
-   procedure Initialize;
+   procedure Initialize(Str : in String := ".");
    function Get_Path_Name return Wide_String;
    function Get_Unit_Name return Wide_String;
    function Path_And_Unit_Name return Wide_String;
-   function Command_Line_Options return Wide_String;
    function Path_Exists return Boolean;
 end Adarorg_Options;

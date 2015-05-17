@@ -1,14 +1,18 @@
+with
+  Ada.Text_Io;
+use
+  Ada.Text_Io;
 package body Predicate_Complicated_Clause is
    Depth : Natural := 0;
    procedure Enter_Complicated_Clause is
    begin
       Depth := Depth + 1;
-      --Put_Line("+Depth:"& Natural'Image(Depth));
+      Put_Line("+Depth_of_Complicated_Clause:"& Natural'Image(Depth));
    end Enter_Complicated_Clause;
    procedure Leaving_Complicated_Clause is
    begin
       Depth := Depth - 1;
-      --Put_Line("-Depth:"& Natural'Image(Depth));
+      Put_Line("-Depth_of_Complicated_Clause:"& Natural'Image(Depth));
    end Leaving_Complicated_Clause;
    function Is_Inside_A_Complicated_Clause return Boolean is
    begin

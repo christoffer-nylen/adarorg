@@ -14,9 +14,10 @@ with
 with
   Predicate_Queries,
   Adarorg_Constants,
-  Statistics;
+  Adarorg_Constants.Asis_Types;
 use
-  Adarorg_Constants;
+  Adarorg_Constants,
+  Adarorg_Constants.Asis_Types;
 package body Active_Clauses is
    Array_Of_Clauses : Element_Stack.Stack(STACK_SIZE);
 
@@ -64,6 +65,11 @@ package body Active_Clauses is
             case Expression_Kind(Elem) is
                when An_Integer_Literal .. A_String_Literal =>
                   null;
+               when A_Null_Literal =>
+                  --TODO: null is neither upper or lower, also check if "operand has an access type" instead
+                  Data.Contains_Range_Last := True; -- TODO: Fix..
+                  N.Data.Contains_Range_First := True;
+                  N.Data.Contains_Range_Last := True;
                when A_Character_Literal =>
                   null;
                when An_Enumeration_Literal =>
@@ -126,7 +132,6 @@ package body Active_Clauses is
             when An_Operator_Symbol =>
                case Operator_Kind(N.Data.Element) is
                   when A_Relational_Operator =>
-                     Statistics.Data.Relops_Total := Statistics.Data.Relops_Total+1;
                      Check_Comparability(N.Left.Data.Element, N.Left.Data);
                      Check_Comparability(N.Right.Data.Element, N.Right.Data);
                      Push(N);
@@ -180,6 +185,11 @@ package body Active_Clauses is
                Push(N);
             when others =>
                Trace("active_clauses.adb : Unknown Element:", N.Data.Element);
+               --TODO: This is not a function call, but perhaps it will work
+               --      Short circuits will be treated this way:
+               --      N.Data.Contains_Function_Call := True;
+               --TODO: This is a clause so set return type boolean?
+               Push(N);
          end case;
       end Iter;
    begin

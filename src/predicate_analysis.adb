@@ -12,7 +12,8 @@ with
 with
   Adarorg_Constants,
   Active_Clauses,
-  Predicate_Queries;
+  Predicate_Queries,
+  Statistics;
 use
   Adarorg_Constants;
 
@@ -110,8 +111,9 @@ package body Predicate_Analysis is
                      if Predicate.Is_Comparable(Tmp.Data) then
                         --Put_Line("HerEEer3");
                         --TODO: Give Clause ID
-                        if not Predicate.Has_Id(Tmp.Data) then
-                           Predicate.Generate_Id(Tmp.Data);
+                        if not Predicate.Has_Relop_Id(Tmp.Data) then
+                           Statistics.Process_Tested_Relational_Operator(Tmp.Data.Element);
+                           Predicate.Assign_Relop_Id(Tmp.Data, Statistics.Get_Relops_Tested_Count);
                         end if;
                         Set_Bit(Number_Of_Clauses-Clause+1, Determining_Clauses); --Move this line outside if to Get MCDC/Regular clause coverage instead
                      end if;

@@ -34,6 +34,7 @@ use
 -- RORG
 with
   Active_Clauses,
+  Adarorg_Constants,
   Adarorg_Options,
   Bit_Operations,
   Filelist,
@@ -42,6 +43,8 @@ with
   Predicate_Queries,
   Stack_Array,
   Statistics;
+use
+  Adarorg_Constants;
 
 package body Instrumentation is
    Test_Covered : array ( Positive range 1..2**PREDICATE_SIZE) of Boolean;
@@ -107,7 +110,7 @@ package body Instrumentation is
 
    procedure Push_Predicate_Expression(Expr : Asis.Expression) is
    begin
-     Marked_Expressions.Push((Expression => Expr, Id => Statistics.Data.Predicates_Tested), Predicate_Expressions);
+     Marked_Expressions.Push((Expression => Expr, Id => Statistics.Get_Predicates_Tested_Count), Predicate_Expressions);
    end Push_Predicate_Expression;
 
    ---------------------
@@ -162,9 +165,11 @@ package body Instrumentation is
    end Copy_Input_To_Output;
 
    procedure IgnoreInput(Line : Text_Line_Number; Column : Natural) is
+      Skip_Next_Char : Wide_Character;
    begin
       Ada.Wide_Text_IO.Set_Line(Input_File_Handle, To_Count(Line));
-      Ada.Wide_Text_IO.Set_Col(Input_File_Handle, To_Count(Column+1));
+      Ada.Wide_Text_IO.Set_Col(Input_File_Handle, To_Count(Column));
+      Ada.Wide_Text_IO.Get(Input_File_Handle, Skip_Next_Char);
    end;
 
    procedure Close_File is
@@ -364,7 +369,9 @@ package body Instrumentation is
             when A_Function_Call =>
                Generate_Clause;
             when others =>
-               Put("predicate.adb : FAILED_TO_EVAL");
+               -- Put("predicate.adb : FAILED_TO_EVAL");
+               -- TODO: shall short circuits be treated this way?
+               Generate_Clause;
          end case;
       end Iter;
    begin
@@ -543,7 +550,7 @@ package body Instrumentation is
          New_Line;
          Indentation;
          Put_Line(COMMENT_TOK & SPACE_TOK & FUNCTION_NAME_TOK &
-                  Trim(Natural'Wide_Image(Statistics.Data.Predicates_Tested),Both));
+                  Trim(Natural'Wide_Image(Statistics.Get_Predicates_Tested_Count),Both));
          Indentation;
          Put_Line(COMMENT_TOK & SPACE_TOK & LOCATION_COMMENT &
                   SPACE_TOK & File_Name(1..File_Name_Length) & ADA_BODY_FILE_EXTENSION_TOK & COLON_TOK &
@@ -568,7 +575,7 @@ package body Instrumentation is
          -- RORG MARK FUNCTION HEAD
          Indentation;
          Put(FUNCTION_TOK & SPACE_TOK & FUNCTION_NAME_TOK &
-             Trim(Natural'Wide_Image(Statistics.Data.Predicates_Tested),Both));
+             Trim(Natural'Wide_Image(Statistics.Get_Predicates_Tested_Count),Both));
          Generate_Parameters;
          Put_Line(SPACE_TOK & RETURN_TOK & SPACE_TOK & BOOLEAN_TOK &
                   SPACE_TOK & IS_TOK);
@@ -587,7 +594,9 @@ package body Instrumentation is
             end loop;
          end Indentation;
 
-         procedure Generate_Declaration(Clause_Index : Positive; Clause_Node : Predicate.Predicate_Tree.Node_Access; Arg : String_Type) is
+         procedure Generate_Declaration(Clause_Index : Positive;
+                                        Clause_Node  : Predicate.Predicate_Tree.Node_Access;
+                                        Arg          : String_Type) is
             use Asis, Asis.Elements, Asis.Expressions, Asis.Declarations, Asis.Text;
             use Ada.Strings, Ada.Strings.Wide_Fixed;
 
@@ -658,7 +667,7 @@ package body Instrumentation is
          -- RORG MARK FUNCTION END
          Indentation;
          Put_Line(END_TOK & SPACE_TOK & FUNCTION_NAME_TOK &
-                  Trim(Natural'Wide_Image(Statistics.Data.Predicates_Tested),Both) &
+                  Trim(Natural'Wide_Image(Statistics.Get_Predicates_Tested_Count),Both) &
                   SEMI_COLON_TOK);
       end;
 
@@ -830,7 +839,6 @@ package body Instrumentation is
    end Generate_RORG_Mark_Function_Declaration;
 
    procedure Generate_RORG_Mark_Calls is
-      --Line : Text_Line_Number;
       Number_Of_Predicates : constant Natural := Marked_Expressions.Length(Predicate_Expressions);
       RM_Expr : Rorg_Marked_Expression;
       procedure Generate_RORG_Mark_Call(RM_Expr : Rorg_Marked_Expression) is
@@ -838,6 +846,7 @@ package body Instrumentation is
          use Ada.Strings, Ada.Strings.Wide_Fixed;
          Expr_Span : constant Span := Element_Span(RM_Expr.Expression);
 
+         -- Generate arguments if loop variables are present.
          procedure Generate_Arguments is
             procedure Put_Elem(Identifier : Asis.Expression) is
                use Asis;
@@ -863,16 +872,11 @@ package body Instrumentation is
       begin
          Copy_Input_To_Output(Expr_Span.First_Line, Expr_Span.First_Column);
          -- RORG MARK FUNCTION CALL
-         Put(FUNCTION_NAME_TOK &
-         --Put(LEFT_PAREN_TOK & FUNCTION_NAME_TOK &
-             Trim(Natural'Wide_Image(RM_Expr.Id),Both));
+         Put(FUNCTION_NAME_TOK & Trim(Natural'Wide_Image(RM_Expr.Id),Both));
          Predicate_Loop_Variables.Set_Predicate(RM_Expr.Id);
          Generate_Arguments;
-         --Put(SPACE_TOK & AND_TOK & SPACE_TOK &
-         --    LEFT_PAREN_TOK);
-         --Put(Trim(Element_Image(RM_Expr.Expression),both));
+         --Put(SPACE_TOK);
          IgnoreInput(Expr_Span.Last_Line, Expr_Span.Last_Column);
-         --Put(RIGHT_PAREN_TOK & RIGHT_PAREN_TOK);
       end Generate_RORG_Mark_Call;
    begin
       Set_Streams;

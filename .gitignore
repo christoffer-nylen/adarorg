@@ -11,6 +11,7 @@
 b~*
 # ignore all files in the bin/ directory
 bin/
+obj/
 
 ###############################
 # AdaRORG stuff to be ignored #

@@ -4,7 +4,7 @@ with
 
 --RORG
 with
-  Adarorg_Constants;
+  Adarorg_Constants.Asis_Types;
 
 package body Predicate_Queries is
    function Is_Regular_Clause(Element : Asis.Expression) return Boolean is
@@ -18,7 +18,7 @@ package body Predicate_Queries is
 
    function Is_Relational_Clause(Element : Asis.Expression) return Boolean is
       use Asis, Asis.Elements, Asis.Expressions;
-      use Adarorg_Constants;
+      use Adarorg_Constants.Asis_Types;
    begin
       if Expression_Kind (Element)=An_Operator_Symbol then
          return Operator_Kind(Element) in A_Relational_Operator;

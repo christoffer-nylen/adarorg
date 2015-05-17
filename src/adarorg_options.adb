@@ -10,7 +10,6 @@
 -- Ada
 with
   Ada.Characters.Handling,
-  Ada.Command_Line,
   Ada.Strings.Wide_Unbounded,
   Ada.Wide_Text_Io;
 use
@@ -33,8 +32,6 @@ package body Adarorg_Options is
    Unit_Name_Length : Natural := 0;
    Path_Name_Length : Natural := 0;
 
-   Extra_Options : Ada.Strings.Wide_Unbounded.Unbounded_Wide_String;
-
    package Pat renames Gnat.Regpat;
 
    procedure Search_For_Pattern(Compiled_Expression: Pat.Pattern_Matcher;
@@ -55,18 +52,10 @@ package body Adarorg_Options is
    -- Initialize --
    ----------------
 
-   procedure Initialize is
-      use Ada.Command_Line, Ada.Characters.Handling;
-      File_Not_Specified : exception;
+   procedure Initialize(Str : in String := ".") is
+      use Ada.Characters.Handling;
    begin
-      if Argument_Count=0 then
-         Put_Line ("Please specify ada file");
-         raise File_Not_Specified;
-         return;
-      end if;
-
       declare
-         Str : constant String := Argument(1);
          Current_First : Positive := Str'First;
          First, Last : Positive;
          Found : Boolean;
@@ -97,10 +86,6 @@ package body Adarorg_Options is
             Unit_Name_Length := 0;
          end if;
       end;
-
-      for Arg in 2 .. Argument_Count loop
-         Ada.Strings.Wide_Unbounded.Append(Extra_Options, ' ' & To_Wide_String(Argument(Arg)));
-      end loop;
    end Initialize;
 
    -------------------
@@ -129,16 +114,6 @@ package body Adarorg_Options is
    begin
       return Path_Name(1..Path_Name_Length) & Unit_Name(1..Unit_Name_Length);
    end Path_And_Unit_Name;
-
-   ---------------------------
-   -- Command_Line_Commands --
-   ---------------------------
-
-   function Command_Line_Options return Wide_String is
-      use Ada.Strings.Wide_Unbounded;
-   begin
-      return To_Wide_String(Extra_Options);
-   end Command_Line_Options;
 
    -----------------
    -- Path_Exists --

@@ -13,8 +13,7 @@ with
 
 --RORG
 with
-  Predicate_Queries,
-  Statistics;
+  Predicate_Queries;
 
 package body Predicate is
 
@@ -22,13 +21,17 @@ package body Predicate is
    Stack_Elements : Element_Stack.Stack(STACK_SIZE);
 
    procedure Push(Node : in Predicate_Tree.Node_Access) is
+      use Utilities;
    begin
+      Trace("Predicate.adb.Push : ", Node.Data.Element);
       Element_Stack.Push(Node, Stack_Elements);
    end Push;
 
    procedure Pop(Node : out Predicate_Tree.Node_Access) is
+      use Utilities;
    begin
       Element_Stack.Pop(Stack_Elements, Node);
+      Trace("Predicate.adb.Pop : ", Node.Data.Element);
    end Pop;
 
    function Peek return Predicate_Tree.Node_Access is
@@ -41,16 +44,15 @@ package body Predicate is
       Element_Stack.Make_Empty(Stack_Elements);
    end Clear;
 
-   function Has_Id(Data : Clause_Information) return Boolean is
+   function Has_Relop_Id(Data : Clause_Information) return Boolean is
    begin
       return Data.Absolute_Id /= NO_ID;
-   end Has_Id;
+   end Has_Relop_Id;
 
-   procedure Generate_Id(Data : in out Clause_Information) is --TODO: take number as argument and rename to assign_id
+   procedure Assign_Relop_Id(Data : in out Clause_Information; Id : in Integer) is
    begin
-      Statistics.Data.Relops_Tested := Statistics.Data.Relops_Tested+1; --TODO:move statictis use to predicate_analysis
-      Data.Absolute_Id := Statistics.Data.Relops_Tested;
-   end Generate_Id;
+      Data.Absolute_Id := Id;
+   end Assign_Relop_Id;
 
    function Is_Comparable(Data : Predicate.Clause_Information) return Boolean is
       use Predicate_Queries;
@@ -60,6 +62,7 @@ package body Predicate is
    end Is_Comparable;
 
    function Make_Clause(Elem : Asis.Element;
+                        Relop_Kind : Ada_Type_Kind := Unknown_Type;
                         Value : Boolean := False;
                         Absolute_Id : Integer := NO_ID;
                         Relative_Id : Integer := NO_ID;
@@ -68,7 +71,7 @@ package body Predicate is
                         Contains_Range_Last : Boolean := False;
                         Number_Of_Equal_Clauses : Natural := 0) return Clause_Information is
    begin
-      return (Elem, Value, Absolute_Id, Relative_Id, Contains_Function_Call, Contains_Range_First, Contains_Range_Last, Number_Of_Equal_Clauses);
+      return (Elem, Relop_Kind, Value, Absolute_Id, Relative_Id, Contains_Function_Call, Contains_Range_First, Contains_Range_Last, Number_Of_Equal_Clauses);
    end Make_Clause;
 
    --Function used to avoid dangling pointer when freeing clauses
@@ -207,7 +210,8 @@ package body Predicate is
             --TODO: Fail?
             Result := N.Data.Value;
          when others =>
-            Trace("predicate.adb : FAILED_TO_EVAL: ", N.Data.Element);
+            Result := N.Data.Value;
+            Trace("predicate.adb : complicated_clause: ", N.Data.Element);
       end case;
       return Result;
    end Eval;

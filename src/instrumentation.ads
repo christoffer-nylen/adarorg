@@ -13,11 +13,11 @@ with
 
 --RORG
 with
-  Adarorg_Constants,
+  Adarorg_Constants.Asis_Types,
   Binary_Tree,
   Determining_Test_Set;
 use
-  Adarorg_Constants;
+  Adarorg_Constants.Asis_Types;
 package Instrumentation is
    type Coverage_Information is
       record

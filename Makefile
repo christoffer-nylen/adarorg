@@ -33,7 +33,6 @@ UNIX_RM  = rm -f
 UNIX_EXT =
 UNIX_EXEC = ./
 
-
 ###############################################################################
 # GNAT options, adjust to your taste
 
@@ -56,6 +55,8 @@ EXEC = ${UNIX_EXEC}
 ###############################################################################
 # Do not change anything below this line
 
+INCLUDES = -Ithird_party/ -Ithird_party/adalog/ -Iutil/
+
 .PHONY : *
 
 help :
@@ -74,7 +75,7 @@ help :
 build : adarorg adarorg_report filelist
 
 adarorg : mkdir
-	@cd src; gnatmake adarorg.adb ${GARGS} ${CARGS} ${CARGS_EXTRA} ${BARGS} ${LARGS}
+	@cd src; gnatmake adarorg.adb ${INCLUDES} ${GARGS} ${CARGS} ${CARGS_EXTRA} ${BARGS} ${LARGS}
 	@mv src/adarorg bin/
 
 adarorg_report :

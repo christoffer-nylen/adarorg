@@ -6,13 +6,15 @@ with -- Ada
   Ada.Strings,
   Ada.Strings.Wide_Fixed,
   Ada.Wide_Text_IO;
+use
+  Ada.Wide_Text_IO;
 
 with -- AdaRORG
   Adarorg_Types,
+  Adarorg_Constants,
   Filelist;
-
 use
-  Ada.Wide_Text_IO;
+  Adarorg_Constants;
 
 package body Rorg.Report is
    procedure Report_Analysis(Result_File : String) is

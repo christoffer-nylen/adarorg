@@ -3,8 +3,10 @@ with
 
 with
   Adarorg_Constants,
+  Adarorg_Types,
   Binary_Tree;
 use
+  Adarorg_Types,
   Adarorg_Constants;
 
 package Predicate is
@@ -14,6 +16,7 @@ package Predicate is
    type Clause_Information is
       record
          Element : Asis.Element;
+         Relop_Kind : Adarorg_Types.Ada_Type_Kind;
          Value : Boolean;
          Absolute_Id : Integer;
          Relative_Id : Integer;
@@ -23,12 +26,13 @@ package Predicate is
          Number_Of_Equal_Clauses : Natural; --Needed to avoid dangling pointer
       end record;
 
-   function Has_Id(Data : Clause_Information) return Boolean;
-   procedure Generate_Id(Data : in out Clause_Information);
+   function Has_Relop_Id(Data : Clause_Information) return Boolean;
+   procedure Assign_Relop_Id(Data : in out Clause_Information; Id : in Integer);
 
    function Is_Comparable(Data : Predicate.Clause_Information) return Boolean;
 
    function Make_Clause(Elem : Asis.Element;
+                        Relop_Kind : Ada_Type_Kind := Unknown_Type;
                         Value : Boolean := False;
                         Absolute_Id : Integer := NO_ID;
                         Relative_Id : Integer := NO_ID;

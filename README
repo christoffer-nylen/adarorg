@@ -1,0 +1,50 @@
+AdaRORG
+=======
+Description
+-----------
+A tool that instruments and reports achieved RORG coverage in Ada programs. Use it to verify relational operator correctness, but also measure how well tests exercise the code.
+
+Categories
+----------
+Quality Assurance, Structural code coverage, Logic-based code coverage
+
+Issue Reports
+-------------
+Problems whose origin is due to compiler bugs or defects in the implementation of ASIS cannot be corrected (contact your compiler provider for support of these problems). However, it might be possible to find workarounds for such problems.
+
+Building AdaRORG from source
+============================
+This section describes how to build the source distribution of AdaRORG.
+
+Prerequisites
+-------------
+The following software must be installed in order to compile AdaRORG from source: 
+
+* A GNAT compiler, any version (2012 has been tested). Note that the compiler must also be available on the machine in order to run AdaRORG (all ASIS applications need the compiler).
+* ASIS for GNAT
+
+Make sure to have the same version of GNAT and ASIS. The version used for running AdaRORG must be the same as the one used to compile AdaRORG itself.
+
+Build with project file
+-----------------------
+Simply type:
+     gnatmake -Padarorg.gpr
+And you're done!
+
+Build with Makefile
+-------------------
+The previous method may fail if Asis is not installed in an usual place. As an alternative method, it is possible to build AdaRORG with a regular Makefile.
+
+The file Makefile should be modified to match the commands and paths of the target system. The following variables are to be set: 
+
+* ASIS_TOP
+* ASIS_INCLUDE
+* ASIS_OBJ
+* ASIS_LIB
+* RM
+* EXT
+
+How to set these variables properly is documented in Makefile.
+
+Then, run the make command:
+     $ make build

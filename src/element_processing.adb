@@ -21,6 +21,7 @@ with
 with
   Active_Clauses,
   Adarorg_Constants,
+  Adarorg_Constants.Asis_Types,
   Determining_Test_Set,
   Instrumentation,
   Predicate,
@@ -30,6 +31,7 @@ with
   Statistics;
 use
   Adarorg_Constants,
+  Adarorg_Constants.Asis_Types,
   Predicate_Complicated_Clause;
 
 package body Element_Processing is
@@ -96,6 +98,8 @@ package body Element_Processing is
       end if;
 
       Predicate.Push(Node_Clause);
+
+      --TODO: check is literal is boundary value? A_Null_Literal for example?
    end Process_Literal;
 
    procedure Process_Operator (Oper : in Asis.Expression) is
@@ -127,12 +131,31 @@ package body Element_Processing is
       Enter_Complicated_Clause;
    end Process_Complicated_Element;
 
+   procedure Process_Unknown_Element (Expr : in Asis.Expression) is
+      use Utilities;
+      Unknown_Expression : exception;
+   begin
+      if not Inside_A_Predicate then
+         return;
+      end if;
+
+      Trace("element_processing.adb : Add rule to framework.adb : ", Expr);
+      raise Unknown_Expression;
+
+   end Process_Unknown_Element;
+
    procedure Process_Condition_Expression (Expr : in Asis.Expression) is
       use Asis, Asis.Elements;
       use Utilities;
-
+      Predicate_Inside_A_Predicate : exception;
    begin
+      if Inside_A_Predicate then
+         Trace("element_processing.adb : Predicate inside Predicate : ", Expr);
+         raise Predicate_Inside_A_Predicate;
+      end if;
+
       Inside_A_Predicate := True;
+      Put_Line("+Inside_A_Predicate:True");
       Predicate_Expression := Expr;
    end Process_Condition_Expression;
 
@@ -187,7 +210,7 @@ package body Element_Processing is
                Instrumentation.Generate_RORG_Mark_Function_Declaration(Predicate_Pairs);
                --Predicate.Increment_Predicate_Counter;
                Predicate_Loop_Variables.Store_Used_Variables;
-               Statistics.Data.Predicates_Tested := Statistics.Data.Predicates_Tested+1;
+               Statistics.Process_Tested_Condition_Expression(Predicate_Expression);
 
                --Clean
                Determining_Test_Set.Test_Pairs.Make_Empty(Predicate_Pairs);
@@ -205,6 +228,7 @@ package body Element_Processing is
          Predicate_Analysis.Clear;
 
          Inside_A_Predicate := False;
+         Put_Line("-Inside_A_Predicate:False");
       end if;
    end Post_Process_Expression;
 

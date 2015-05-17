@@ -1,17 +1,18 @@
 -- Ada
 with
+  Ada.Calendar,
+  Ada.Calendar.Formatting,
+  Ada.Calendar.Time_Zones,
   Ada.Characters.Handling,
   Ada.Wide_Text_Io,
   Ada.Streams.Stream_Io;
 
 -- AdaRORG
 with
+  Adarorg_Constants,
   Adarorg_Types.Printing;
 use
   Adarorg_Types.Printing;
---   Adarorg_Contants;
---use
---  Adarorg_Contants;
 
 package body Filelist is
 
@@ -114,20 +115,35 @@ package body Filelist is
    end Update_Filelist;
 
    procedure Print_Filelist is
+      use Ada.Calendar, Ada.Calendar.Formatting, Ada.Calendar.Time_Zones;
       use Ada.Wide_Text_Io;
       use Ada.Characters.Handling;
       use Ada.Streams.Stream_Io;
+      use Adarorg_Constants;
+
+      Now : constant Time := Clock;
 
       Tmp_Data : Instrumented_File;
    begin
       Open_Filelist;
 
+      Put_Line(HEADER_LINE_BOLD);
+      Put_Line(HEADER_LINE_2 & ADARORG);
+      Put_Line(HEADER_LINE_2 & ADARORG_VERSION);
+
       while not End_Of_Filelist loop
          Read_Instrumented_File(Tmp_Data);
-         Put(Tmp_Data.CU_Name(1..Tmp_Data.CU_Name_Length) & " " &
-               Tmp_Data.File_Name(1..Tmp_Data.File_Name_Length) & " " );
-         Put(Tmp_Data.Data);
+
+         Put_Line(HEADER_LINE_THIN);
+         Put_Line(HEADER_LINE_3_STATIC & Tmp_Data.CU_Name(1..Tmp_Data.CU_Name_Length));
+         Put_Line(HEADER_LINE_4_STATIC & To_Wide_String(Image(Date => Now, Time_Zone => 60)(1..16))); --TODO: Fix
+         Put_Line(HEADER_LINE_THIN);
          New_Line;
+
+         Put_Line(PATH_NAME & Tmp_Data.File_Name(1..Tmp_Data.File_Name_Length));
+         New_Line;
+
+         Put(Tmp_Data.Data);
       end loop;
       Close_Filelist;
    exception

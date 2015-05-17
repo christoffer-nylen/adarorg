@@ -7,12 +7,6 @@
 --  PURPOSE.                                                        --
 ----------------------------------------------------------------------
 
-with
-  Asis,
-  Asis.Text;
-use
-  Asis;
-
 package Adarorg_Constants is
 
    STACK_SIZE : constant Positive := 100;
@@ -21,39 +15,6 @@ package Adarorg_Constants is
    PREDICATE_SIZE : constant Positive := 11;
 
    NO_ID : constant Integer := 0;
-
-   subtype A_Relational_Operator is Operator_Kinds Range
-     An_Equal_Operator ..
-     A_Greater_Than_Or_Equal_Operator;
-
-   Additional_Test_For_Boolean : array (A_Relational_Operator) of Boolean :=
-     (False,--An_Equal_Operator
-      True,--A_Not_Equal_Operator
-      False,--A_Less_Than_Operator
-      True,--A_Less_Than_Or_Equal_Operator
-      False,--A_Greater_Than_Operator
-      True);--A_Greater_Than_Or_Equal_Operator
-   Additional_Test_For_Relop : array (A_Relational_Operator) of A_Relational_Operator :=
-     (A_Less_Than_Operator, --An_Equal_Operator
-      A_Less_Than_Operator,--A_Not_Equal_Operator
-      An_Equal_Operator,--A_Less_Than_Operator
-      An_Equal_Operator,--A_Less_Than_Or_Equal_Operator
-      An_Equal_Operator,--A_Greater_Than_Operator
-      An_Equal_Operator);--A_Greater_Than_Or_Equal_Operator
-   Implicit_Additional_Test_For_Relop : array (A_Relational_Operator) of A_Relational_Operator :=
-     (A_Greater_Than_Operator, --An_Equal_Operator
-      A_Greater_Than_Operator,--A_Not_Equal_Operator
-      A_Greater_Than_Operator,--A_Less_Than_Operator
-      A_Less_Than_Operator,--A_Less_Than_Or_Equal_Operator
-      A_Less_Than_Operator,--A_Greater_Than_Operator
-      A_Greater_Than_Operator);--A_Greater_Than_Or_Equal_Operator
-   Implicit_Test_For_Relop : array (A_Relational_Operator) of A_Relational_Operator :=
-     (An_Equal_Operator,--An_Equal_Operator
-      An_Equal_Operator,--A_Not_Equal_Operator
-      A_Less_Than_Operator,--A_Less_Than_Operator
-      A_Greater_Than_Operator,--A_Less_Than_Or_Equal_Operator
-      A_Greater_Than_Operator,--A_Greater_Than_Operator
-      A_Less_Than_Operator);--A_Greater_Than_Or_Equal_Operator
 
    ------------------------------------------------------------
    -- INSTRUMENTATION                                        --
@@ -105,13 +66,6 @@ package Adarorg_Constants is
    END_IF_TOK : constant String_Type := "end if";
    INDENT_SPACE_TOK : constant String_Type := "   ";
    INDENT_SIZE : constant Positive := 3;
-   RELATIONAL_OP_TOK : constant array (A_Relational_Operator) of String_Type(1..2) :=
-     (" =",--An_Equal_Operator
-      "/=",--A_Not_Equal_Operator
-      " <",--A_Less_Than_Operator
-      "<=",--A_Less_Than_Or_Equal_Operator
-      " >",--A_Greater_Than_Operator
-      ">=");--A_Greater_Than_Or_Equal_Operator
 
    -- Temporary variable
    CLAUSE_ARG : constant String_Type := "Clause_";
@@ -136,9 +90,6 @@ package Adarorg_Constants is
    COVERED_FOR : constant String_Type := "is covered";
    SPACE21_TOK : constant String_Type := "                     ";
 
-   subtype Text_Line_Number is Asis.Text.Line_Number;
-   subtype Text_Column_Number is Positive;
-
    ------------------------------------------------------------
    -- MESSAGES                                               --
    ------------------------------------------------------------
@@ -148,8 +99,48 @@ package Adarorg_Constants is
    STATUS_VALUE_MESSAGE : constant String_Type := "Status Value is ";
 
    ------------------------------------------------------------
+   -- EXCEPTIONS                                             --
+   ------------------------------------------------------------
+   CONTEXT_UNIT_NOT_FOUND : exception;
+
+   ------------------------------------------------------------
    -- Regular Expressions                                    --
    ------------------------------------------------------------
    PATH_PATTERN : constant String := "([a-zA-Z_/]+/)";
    UNIT_PATTERN : constant String := "([^.]+)";
+
+   ------------------------------------------------------------
+   -- REPORT & FILELIST                                      --
+   ------------------------------------------------------------
+   HEADER_LINE_BOLD : constant String_Type :=
+     "================================================================================";
+   HEADER_LINE_2 : constant String_Type :=
+     "        ";
+   ADARORG :         constant String_Type := "AdaRORG 2015";
+   ADARORG_VERSION : constant String_Type := "Version 0.1r1";
+   HEADER_LINE_THIN : constant String_Type :=
+     "--------------------------------------------------------------------------------";
+   HEADER_LINE_3_STATIC  : constant String_Type := "        Static Analysis for ";
+   HEADER_LINE_4_STATIC  : constant String_Type := "        Analysis run on ";
+   HEADER_LINE_3_DYNAMIC : constant String_Type := "        Test Results for ";
+   HEADER_LINE_4_DYNAMIC : constant String_Type := "        Test run on ";
+
+   PATH_NAME :                    constant String_Type := "Path: ";
+   INDENT_ONE :                   constant String_Type := " ";
+   NUMBER_OF_PREDICATES :         constant String_Type := " Predicates";
+   NUMBER_OF_PREDICATES_LINE :    constant String_Type := " ----------";
+   NUMBER_OF_RELOPS :             constant String_Type := " Relational operators";
+   NUMBER_OF_RELOPS_LINE  :       constant String_Type := " --------------------";
+   TOTAL_ONE :                    constant String_Type := "  Total        : ";
+   INSTRUMENTED_ONE :             constant String_Type := "  Instrumented : ";
+   INSTRUMENTATION_DETAILS :      constant String_Type := " Instrumentation details";
+   INSTRUMENTATION_DETAILS_LINE : constant String_Type := " -----------------------";
+   INDENT_TWO :                   constant String_Type := "   ";
+   ENUMERATION_TYPE :             constant String_Type := "   Enumeration type";
+   ENUMERATION_TYPE_LINE :        constant String_Type := "   ----------------";
+   INTEGER_TYPE :                 constant String_Type := "   Integer type";
+   INTEGER_TYPE_LINE :            constant String_Type := "   ------------";
+   REAL_TYPE :                    constant String_Type := "   Real type";
+   REAL_TYPE_LINE :               constant String_Type := "   ---------";
+   TOTAL_TWO :                    constant String_Type := "    Total      : ";
 end Adarorg_Constants;

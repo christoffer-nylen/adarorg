@@ -13,6 +13,8 @@ package Element_Processing is
 
    procedure Process_Complicated_Element (Expr : in Asis.Expression);
 
+   procedure Process_Unknown_Element (Expr : in Asis.Expression);
+
    procedure Process_Condition_Expression (Expr : in Asis.Expression);
 
    procedure Post_Process_Complicated_Element;

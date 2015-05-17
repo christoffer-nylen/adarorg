@@ -55,7 +55,7 @@ package body Predicate_Loop_Variables is
    procedure Store_Used_Variables is
    begin
       if(Current_Span.Offset>0) then
-         Current_Span.Predicate_Id := Statistics.Data.Predicates_Tested;
+         Current_Span.Predicate_Id := Statistics.Get_Predicates_Tested_Count;
          Expression_Loop_Variables.Push(Current_Span, Loop_Variables);
       end if;
       Current_Span.Start_Index := Current_Span.Start_Index+Current_Span.Offset;
