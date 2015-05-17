@@ -1,0 +1,58 @@
+AdaRORG - Static Analysis Data
+
+Compilation Unit: unzip
+=======================
+Path: "./unzip"
+
+ # Predicates
+ ------------
+  Total        : 34
+  Instrumented : 2
+
+ # Relational operators
+ ----------------------
+  Total        : 32
+  Instrumented : 4
+
+ # Instrumentation details
+ -------------------------
+
+   Enumeration type (12%)
+   ----------------------
+    <            : 0
+    >            : 10
+    =            : 10
+    <=           : 135
+    >=           : 0
+    !=           : 0
+    Total        : 145
+
+   Integer type (14%)
+   ------------------
+    <            : 0
+    >            : 1
+    =            : 2
+    <=           : 0
+    >=           : 0
+    !=           : 0
+    Total        : 3
+
+   Floating-point type (0%)
+   ------------------------
+    <            : 0
+    >            : 1
+    =            : 2
+    <=           : 0
+    >=           : 0
+    !=           : 0
+    Total        : 0
+
+   Fixed-point type (0%)
+   ---------------------
+    <            : 0
+    >            : 1
+    =            : 2
+    <=           : 0
+    >=           : 0
+    !=           : 0
+    Total        : 0
