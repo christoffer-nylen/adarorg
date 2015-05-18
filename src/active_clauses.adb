@@ -1,3 +1,6 @@
+with
+  Ada.Wide_Text_Io;
+
 -- ASIS
 with
   Asis,
@@ -5,7 +8,7 @@ with
   Asis.Elements,
   Asis.Expressions;
 
---Adalog
+-- Adalog
 with
   Utilities,
   Thick_Queries;
@@ -132,6 +135,19 @@ package body Active_Clauses is
             when An_Operator_Symbol =>
                case Operator_Kind(N.Data.Element) is
                   when A_Relational_Operator =>
+                     Ada.Wide_Text_Io.New_Line;
+                     Ada.Wide_Text_Io.New_Line;
+                     Ada.Wide_Text_Io.New_Line;
+                     Ada.Wide_Text_Io.Put_Line("Relop operand kinds:");
+                     Ada.Wide_Text_Io.Put_Line("--------------------");
+                     Ada.Wide_Text_Io.Put_Line(Asis.Type_Kinds'Wide_Image(Thick_Queries.Expression_Type_Kind(N.Left.Data.Element)));
+                     Ada.Wide_Text_Io.Put_Line(Asis.Type_Kinds'Wide_Image(Thick_Queries.Expression_Type_Kind(N.Right.Data.Element)));
+                     Ada.Wide_Text_Io.Put_Line("--------------------");
+                     Ada.Wide_Text_Io.New_Line;
+                     Ada.Wide_Text_Io.New_Line;
+                     Ada.Wide_Text_Io.New_Line;
+                     --Predicate.Set_Relop_Kind(N.Left.Data,Thick_Queries.Expression_Type_Kind(N.Left.Data.Element));
+                     --Predicate.Set_Relop_Kind(N.Right.Data,Thick_Queries.Expression_Type_Kind(N.Right.Data.Element));
                      Check_Comparability(N.Left.Data.Element, N.Left.Data);
                      Check_Comparability(N.Right.Data.Element, N.Right.Data);
                      Push(N);

@@ -54,6 +54,11 @@ package body Predicate is
       Data.Absolute_Id := Id;
    end Assign_Relop_Id;
 
+   procedure Set_Relop_Kind(Data : in out Clause_Information; Relop_Kind : Ada_Type_Kind) is
+   begin
+      Data.Relop_Kind := Relop_Kind;
+   end Set_Relop_Kind;
+
    function Is_Comparable(Data : Predicate.Clause_Information) return Boolean is
       use Predicate_Queries;
    begin
@@ -62,7 +67,7 @@ package body Predicate is
    end Is_Comparable;
 
    function Make_Clause(Elem : Asis.Element;
-                        Relop_Kind : Ada_Type_Kind := Unknown_Type;
+                        Relop_Kind : Ada_Type_Kind := No_Type;
                         Value : Boolean := False;
                         Absolute_Id : Integer := NO_ID;
                         Relative_Id : Integer := NO_ID;

@@ -28,11 +28,11 @@ package Predicate is
 
    function Has_Relop_Id(Data : Clause_Information) return Boolean;
    procedure Assign_Relop_Id(Data : in out Clause_Information; Id : in Integer);
-
+   procedure Set_Relop_Kind(Data : in out Clause_Information; Relop_Kind : Ada_Type_Kind);
    function Is_Comparable(Data : Predicate.Clause_Information) return Boolean;
 
    function Make_Clause(Elem : Asis.Element;
-                        Relop_Kind : Ada_Type_Kind := Unknown_Type;
+                        Relop_Kind : Ada_Type_Kind := No_Type;
                         Value : Boolean := False;
                         Absolute_Id : Integer := NO_ID;
                         Relative_Id : Integer := NO_ID;

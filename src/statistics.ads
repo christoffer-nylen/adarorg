@@ -6,10 +6,7 @@ with Adarorg_Types;
 
 package Statistics is
 
-   Data : Adarorg_Types.Static_Data := (Relops_Total => 0,
-                                        Relops_Tested => 0,
-                                        Predicates_Total => 0,
-                                        Predicates_Tested => 0);
+   function Get_Data return Adarorg_Types.Static_Data;
 
    function Get_Relops_Tested_Count return Integer;
 

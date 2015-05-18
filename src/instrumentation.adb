@@ -198,7 +198,7 @@ package body Instrumentation is
 
       U_Name(1..Adarorg_Options.Get_Unit_Name'Length) := Adarorg_Options.Get_Unit_Name;
       F_Name(1..Adarorg_Options.Path_And_Unit_Name'Length) := Adarorg_Options.Path_And_Unit_Name;
-      FL_Data := (U_Name, Adarorg_Options.Get_Unit_Name'Length, F_Name, Adarorg_Options.Path_And_Unit_Name'Length, Statistics.Data);
+      FL_Data := (U_Name, Adarorg_Options.Get_Unit_Name'Length, F_Name, Adarorg_Options.Path_And_Unit_Name'Length, Statistics.Get_Data);
       Filelist.Update_Filelist(FL_Data);
    end Close_File;
 

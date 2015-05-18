@@ -142,5 +142,7 @@ package Adarorg_Constants is
    INTEGER_TYPE_LINE :            constant String_Type := "   ------------";
    REAL_TYPE :                    constant String_Type := "   Real type";
    REAL_TYPE_LINE :               constant String_Type := "   ---------";
-   TOTAL_TWO :                    constant String_Type := "    Total      : ";
+   INDENT_THREE :                 constant String_Type := "    ";
+   RELOP_SPACE :                  constant String_Type :=       "         :";
+   TOTAL_TWO :                    constant String_Type := "    Total      :";
 end Adarorg_Constants;
