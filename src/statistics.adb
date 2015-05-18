@@ -5,7 +5,12 @@ with
 -- AdaRORG
 with
   Adarorg_Constants,
-  Adarorg_Types;
+  Adarorg_Types,
+  Adarorg_Types.Asis_Types;
+
+-- Adalog
+with
+  Thick_Queries;
 
 package body Statistics is
 
@@ -35,20 +40,20 @@ package body Statistics is
       return Data.Predicates_Tested;
    end Get_Predicates_Tested_Count;
 
-   procedure Process_Tested_Relational_Operator (Expr : in Asis.Expression) is
+   procedure Process_Tested_Relational_Operator (Operator : in Adarorg_Types.Ada_Relational_Operator;
+                                                 Operand  : in Adarorg_Types.Ada_Type_Kind) is
       use Adarorg_Types;
    begin
       Relops_Tested_Count := Relops_Tested_Count+1;
-      --TODO: FIX:
-      Data.Relops_Tested(No_Type,Equal_Operator) := Data.Relops_Tested(No_Type,Equal_Operator)+1;
+      Data.Relops_Tested(Operand,Operator) := Data.Relops_Tested(Operand,Operator)+1;
    end Process_Tested_Relational_Operator;
 
-   procedure Process_Relational_Operator (Expr : in Asis.Expression) is
+   procedure Process_Relational_Operator (Operator : in Adarorg_Types.Ada_Relational_Operator;
+                                          Operand  : in Adarorg_Types.Ada_Type_Kind) is
       use Adarorg_Types;
    begin
       Relops_Total_Count := Relops_Total_Count+1;
-      --TODO: FIX:
-      Data.Relops_Total(No_Type,Equal_Operator) := Data.Relops_Total(No_Type,Equal_Operator)+1;
+      Data.Relops_Total(Operand,Operator) := Data.Relops_Total(Operand,Operator)+1;
    end Process_Relational_Operator;
 
    procedure Process_Tested_Condition_Expression (Expr : in Asis.Expression) is

@@ -17,28 +17,28 @@ with
   Asis.Elements,
   Asis.Expressions;
 
-package Adarorg_Types.Asis_Types is
+package body Adarorg_Types.Asis_Types is
 
    function To_Ada_Kind_Type(Kind : Asis.Type_Kinds) return Ada_Type_Kind is
       use Asis, Asis.Elements, Asis.Expressions;
    begin
       case Kind is
-         Not_A_Type_Definition                 => return No_Type;
-         A_Derived_Type_Definition             => return Derived_Type;
-         A_Derived_Record_Extension_Definition => return Derived_Record_Extension;
-         An_Enumeration_Type_Definition        => return Enumeration_Type;
-         A_Signed_Integer_Type_Definition      => return Signed_Integer_Type;
-         A_Modular_Type_Definition             => return Modular_Type;
-         A_Root_Type_Definition                => return Root_Type;
-         A_Floating_Point_Definition           => return Floating_Point;
-         An_Ordinary_Fixed_Point_Definition    => return Ordinary_Fixed_Point;
-         A_Decimal_Fixed_Point_Definition      => return Decimal_Fixed_Point;
-         An_Unconstrained_Array_Definition     => return Unconstrained_Array;
-         A_Constrained_Array_Definition        => return Constrained_Array;
-         A_Record_Type_Definition              => return Record_Type;
-         A_Tagged_Record_Type_Definition       => return Tagged_Record_Type;
-         An_Interface_Type_Definition          => return Interface_Type;
-         An_Access_Type_Definition             => return Access_Type;
+         when Not_A_Type_Definition                 => return Adarorg_Types.No_Type;
+         when A_Derived_Type_Definition             => return Adarorg_Types.Derived_Type;
+         when A_Derived_Record_Extension_Definition => return Adarorg_Types.Derived_Record_Extension;
+         when An_Enumeration_Type_Definition        => return Adarorg_Types.Enumeration_Type;
+         when A_Signed_Integer_Type_Definition      => return Adarorg_Types.Signed_Integer_Type;
+         when A_Modular_Type_Definition             => return Adarorg_Types.Modular_Type;
+         when A_Root_Type_Definition                => return Adarorg_Types.Root_Type;
+         when A_Floating_Point_Definition           => return Adarorg_Types.Floating_Point;
+         when An_Ordinary_Fixed_Point_Definition    => return Adarorg_Types.Ordinary_Fixed_Point;
+         when A_Decimal_Fixed_Point_Definition      => return Adarorg_Types.Decimal_Fixed_Point;
+         when An_Unconstrained_Array_Definition     => return Adarorg_Types.Unconstrained_Array;
+         when A_Constrained_Array_Definition        => return Adarorg_Types.Constrained_Array;
+         when A_Record_Type_Definition              => return Adarorg_Types.Record_Type;
+         when A_Tagged_Record_Type_Definition       => return Adarorg_Types.Tagged_Record_Type;
+         when An_Interface_Type_Definition          => return Adarorg_Types.Interface_Type;
+         when An_Access_Type_Definition             => return Adarorg_Types.Access_Type;
       end case;
    end To_Ada_Kind_Type;
 
@@ -46,12 +46,12 @@ package Adarorg_Types.Asis_Types is
       use Asis, Asis.Elements, Asis.Expressions;
    begin
       case Relop is
-         when An_Equal_Operator                => return Adarorg_Type.Equal_Operator;
-         when A_Not_Equal_Operator             => return Adarorg_Type.Not_Equal_Operator;
-         when A_Less_Than_Operator             => return Adarorg_Type.Less_Than_Operator;
-         when A_Less_Than_Or_Equal_Operator    => return Adarorg_Type.Less_Than_Or_Equal_Operator;
-         when A_Greater_Than_Operator          => return Adarorg_Type.Greater_Than_Operator;
-         when A_Greater_Than_Or_Equal_Operator => return Adarorg_Type.Greater_Than_Or_Equal_Operator;
+         when An_Equal_Operator                => return Adarorg_Types.Equal_Operator;
+         when A_Not_Equal_Operator             => return Adarorg_Types.Not_Equal_Operator;
+         when A_Less_Than_Operator             => return Adarorg_Types.Less_Than_Operator;
+         when A_Less_Than_Or_Equal_Operator    => return Adarorg_Types.Less_Than_Or_Equal_Operator;
+         when A_Greater_Than_Operator          => return Adarorg_Types.Greater_Than_Operator;
+         when A_Greater_Than_Or_Equal_Operator => return Adarorg_Types.Greater_Than_Or_Equal_Operator;
       end case;
    end To_Ada_Relational_Operator;
 

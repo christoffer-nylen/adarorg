@@ -5,13 +5,20 @@ use
   Ada.Wide_Text_Io;
 
 with
+  Asis,
+  Asis.Elements,
+  Asis.Expressions;
+
+with
   Stack_Array,
   Bit_Operations;
 
 --RORG
 with
-  Adarorg_Constants,
   Active_Clauses,
+  Adarorg_Constants,
+  Adarorg_Types,
+  Adarorg_Types.Asis_Types,
   Predicate_Queries,
   Statistics;
 use
@@ -112,7 +119,8 @@ package body Predicate_Analysis is
                         --Put_Line("HerEEer3");
                         --TODO: Give Clause ID
                         if not Predicate.Has_Relop_Id(Tmp.Data) then
-                           Statistics.Process_Tested_Relational_Operator(Tmp.Data.Element);
+                           Statistics.Process_Tested_Relational_Operator(Adarorg_Types.Asis_Types.To_Ada_Relational_Operator(Asis.Elements.Operator_Kind(Tmp.Data.Element)),
+                                                                         Tmp.Data.Relop_Kind);
                            Predicate.Assign_Relop_Id(Tmp.Data, Statistics.Get_Relops_Tested_Count);
                         end if;
                         Set_Bit(Number_Of_Clauses-Clause+1, Determining_Clauses); --Move this line outside if to Get MCDC/Regular clause coverage instead

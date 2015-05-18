@@ -17,7 +17,10 @@ with
 with
   Predicate_Queries,
   Adarorg_Constants,
-  Adarorg_Constants.Asis_Types;
+  Adarorg_Constants.Asis_Types,
+  Adarorg_Types,
+  Adarorg_Types.Asis_Types,
+  Statistics;
 use
   Adarorg_Constants,
   Adarorg_Constants.Asis_Types;
@@ -146,8 +149,9 @@ package body Active_Clauses is
                      Ada.Wide_Text_Io.New_Line;
                      Ada.Wide_Text_Io.New_Line;
                      Ada.Wide_Text_Io.New_Line;
-                     --Predicate.Set_Relop_Kind(N.Left.Data,Thick_Queries.Expression_Type_Kind(N.Left.Data.Element));
-                     --Predicate.Set_Relop_Kind(N.Right.Data,Thick_Queries.Expression_Type_Kind(N.Right.Data.Element));
+                     N.Data.Relop_Kind := Adarorg_Types.Asis_Types.To_Ada_Kind_Type(Thick_Queries.Expression_Type_Kind(N.Left.Data.Element));
+                     Statistics.Process_Relational_Operator (Adarorg_Types.Asis_Types.To_Ada_Relational_Operator(Operator_Kind(N.Data.Element)),
+                                                             Adarorg_Types.Asis_Types.To_Ada_Kind_Type(Thick_Queries.Expression_Type_Kind(N.Left.Data.Element)));
                      Check_Comparability(N.Left.Data.Element, N.Left.Data);
                      Check_Comparability(N.Right.Data.Element, N.Right.Data);
                      Push(N);

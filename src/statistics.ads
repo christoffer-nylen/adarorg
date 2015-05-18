@@ -12,11 +12,13 @@ package Statistics is
 
    function Get_Predicates_Tested_Count return Integer;
 
-   procedure Process_Relational_Operator (Expr : in Asis.Expression);
+   procedure Process_Relational_Operator (Operator : in Adarorg_Types.Ada_Relational_Operator;
+                                          Operand  : in Adarorg_Types.Ada_Type_Kind);
 
    procedure Process_Condition_Expression (Expr : in Asis.Expression);
 
-   procedure Process_Tested_Relational_Operator (Expr : in Asis.Expression);
+   procedure Process_Tested_Relational_Operator (Operator : in Adarorg_Types.Ada_Relational_Operator;
+                                                 Operand  : in Adarorg_Types.Ada_Type_Kind);
 
    procedure Process_Tested_Condition_Expression (Expr : in Asis.Expression);
 

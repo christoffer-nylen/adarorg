@@ -89,13 +89,6 @@ package body Framework is
                   Element_Processing.Process_Identifier (Element);
                when An_Operator_Symbol =>
                   Element_Processing.Process_Operator (Element);
-                  case Operator_Kind (Element) is
-                     when A_Relational_Operator =>
-                        --If problematic, move back to active_clauses.adb:133: when A_Relational_Operator
-                        Statistics.Process_Relational_Operator (Element);
-                     when others =>
-                        null;
-                  end case;
                when A_Function_Call =>
                   if Is_Prefix_Call(Element) then
                      Element_Processing.Process_Complicated_Element(Element);
