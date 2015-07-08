@@ -79,6 +79,8 @@ package body Framework is
             end case;
          when An_Expression =>
             case Expression_Kind (Element) is
+               when Not_An_Expression =>
+                  null;
                when An_Integer_Literal |
                  A_Real_Literal |
                  A_String_Literal |
@@ -87,6 +89,9 @@ package body Framework is
                   Element_Processing.Process_Literal (Element);
                when An_Identifier =>
                   Element_Processing.Process_Identifier (Element);
+               when An_Explicit_Dereference =>
+                  Element_Processing.Process_Unknown_Element(Element);
+                  Trace("Error: framework.adb : Wierd stuff: ", Element);
                when An_Operator_Symbol =>
                   Element_Processing.Process_Operator (Element);
                when A_Function_Call =>
@@ -103,7 +108,8 @@ package body Framework is
                   Element_Processing.Process_Complicated_Element(Element);
                when An_Attribute_Reference =>
                   Element_Processing.Process_Complicated_Element(Element);
-               when A_Named_Array_Aggregate =>
+               when A_Record_Aggregate | An_Extension_Aggregate |
+                 A_Positional_Array_Aggregate | A_Named_Array_Aggregate =>
                   Element_Processing.Process_Complicated_Element(Element);
                when An_And_Then_Short_Circuit | An_Or_Else_Short_Circuit =>
                   Element_Processing.Process_Complicated_Element(Element);
@@ -118,9 +124,13 @@ package body Framework is
                   Element_Processing.Process_Complicated_Element(Element);
                when A_Qualified_Expression =>
                   Element_Processing.Process_Complicated_Element(Element);
-               when others =>
+               when An_Allocation_From_Subtype | An_Allocation_From_Qualified_Expression =>
+                  Trace("Error: framework.adb : Wierd stuff: ", Element);
                   Element_Processing.Process_Unknown_Element(Element);
-                  Trace("framework.adb : Wierd stuff: ", Element);
+               when A_Case_Expression | An_If_Expression |
+                 A_For_All_Quantified_Expression | A_For_Some_Quantified_Expression =>
+                  Trace("Error: framework.adb : Wierd stuff: ", Element);
+                  Element_Processing.Process_Unknown_Element(Element);
             end case;
          when A_Path =>
             case Path_Kind (Element) is
@@ -174,6 +184,8 @@ package body Framework is
             end case;
          when An_Expression =>
             case Expression_Kind (Element) is
+               when Not_An_Expression =>
+                  null;
                when An_Integer_Literal |
                  A_Real_Literal |
                  A_String_Literal |
@@ -198,7 +210,8 @@ package body Framework is
                   Element_Processing.Post_Process_Complicated_Element;
                when An_Attribute_Reference =>
                   Element_Processing.Post_Process_Complicated_Element;
-               when A_Named_Array_Aggregate =>
+               when A_Record_Aggregate | An_Extension_Aggregate |
+                 A_Positional_Array_Aggregate | A_Named_Array_Aggregate =>
                   Element_Processing.Post_Process_Complicated_Element;
                when An_And_Then_Short_Circuit | An_Or_Else_Short_Circuit =>
                   Element_Processing.Post_Process_Complicated_Element;

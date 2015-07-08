@@ -139,7 +139,7 @@ package body Element_Processing is
          return;
       end if;
 
-      Trace("element_processing.adb : Add rule to framework.adb : ", Expr);
+      Trace("Error: element_processing.adb : Add rule to framework.adb : ", Expr);
       raise Unknown_Expression;
 
    end Process_Unknown_Element;
@@ -150,7 +150,7 @@ package body Element_Processing is
       Predicate_Inside_A_Predicate : exception;
    begin
       if Inside_A_Predicate then
-         Trace("element_processing.adb : Predicate inside Predicate : ", Expr);
+         Trace("Error: element_processing.adb : Predicate inside Predicate : ", Expr);
          raise Predicate_Inside_A_Predicate;
       end if;
 
@@ -221,7 +221,7 @@ package body Element_Processing is
          end;
 
          --Clean
-         --Predicate.Print_Tree(Parent_Node);
+         Predicate.Print_Tree(Parent_Node);
          Predicate.Destroy_Tree(Parent_Node);
          Predicate.Clear;
          Active_Clauses.Clear;
@@ -275,7 +275,7 @@ package body Element_Processing is
            An_Exponentiate_Operator =>
             Pop_Node(Left_Operand, Left_Child_Node);
          when Not_An_Operator =>
-            Trace("element_processing.adb : Unknown_Operator: ", Operator);
+            Trace("Error: element_processing.adb : Unknown_Operator: ", Operator);
             raise Unknown_Operator;
       end case;
 

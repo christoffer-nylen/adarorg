@@ -1,12 +1,18 @@
 with
   Ada.Wide_Text_Io;
 
+with
+  Ada.Strings,
+  Ada.Strings.Wide_Fixed,
+  Ada.Characters.Handling;
+
 -- ASIS
 with
   Asis,
   Asis.Declarations,
   Asis.Elements,
-  Asis.Expressions;
+  Asis.Expressions,
+  Asis.Text;
 
 -- Adalog
 with
@@ -56,6 +62,10 @@ package body Active_Clauses is
          use Utilities;
          use Predicate.Predicate_Tree;
          use Predicate_Queries;
+
+         use Ada.Strings, Ada.Strings.Wide_Fixed;
+         use Asis.Text;
+         use Ada.Characters.Handling;
 
          procedure Push(N : Predicate.Predicate_Tree.Node_Access) is
          begin
@@ -120,9 +130,11 @@ package body Active_Clauses is
                when An_Attribute_Reference =>
                   null;
                when A_Function_Call =>
+                  --TODO: when +,-,*,/
+                  --TODO: when A_Not_Operator, if not A = True then etc.
                   null;
                when others =>
-                  Trace("predicate_analysis.adb : Strange Operand:", Elem);
+                  Trace("Error: active_clauses.adb : Strange Operand:", Elem);
             end case;
          end Check_Comparability;
 
@@ -143,7 +155,9 @@ package body Active_Clauses is
                      Ada.Wide_Text_Io.New_Line;
                      Ada.Wide_Text_Io.Put_Line("Relop operand kinds:");
                      Ada.Wide_Text_Io.Put_Line("--------------------");
+                     Ada.Wide_Text_Io.Put_Line("Left >>>" & Trim(Element_Image(N.Left.Data.Element),Both));
                      Ada.Wide_Text_Io.Put_Line(Asis.Type_Kinds'Wide_Image(Thick_Queries.Expression_Type_Kind(N.Left.Data.Element)));
+                     Ada.Wide_Text_Io.Put_Line("Right >>>" & Trim(Element_Image(N.Right.Data.Element),Both));
                      Ada.Wide_Text_Io.Put_Line(Asis.Type_Kinds'Wide_Image(Thick_Queries.Expression_Type_Kind(N.Right.Data.Element)));
                      Ada.Wide_Text_Io.Put_Line("--------------------");
                      Ada.Wide_Text_Io.New_Line;
@@ -190,7 +204,7 @@ package body Active_Clauses is
                      end if;
 
                   when Not_An_Operator =>
-                     Trace("active_clauses.adb : Unknown operator: ", N.Data.Element);
+                     Trace("Error: active_clauses.adb : Unknown operator: ", N.Data.Element);
                end case;
             when A_Parenthesized_Expression =>
                if Is_Regular_Clause(N.Right.Data.Element)
@@ -203,8 +217,13 @@ package body Active_Clauses is
                --TODO: Fail??
                N.Data.Contains_Function_Call := True;
                Push(N);
+            when An_In_Membership_Test | A_Not_In_Membership_Test =>
+               Push(N);
+            when An_And_Then_Short_Circuit | An_Or_Else_Short_Circuit =>
+               Trace("Warning: active_clauses.adb : short circuits might have strange side effetcs:", N.Data.Element);
+               Push(N);
             when others =>
-               Trace("active_clauses.adb : Unknown Element:", N.Data.Element);
+               Trace("Error: active_clauses.adb : Unknown Element:", N.Data.Element);
                --TODO: This is not a function call, but perhaps it will work
                --      Short circuits will be treated this way:
                --      N.Data.Contains_Function_Call := True;

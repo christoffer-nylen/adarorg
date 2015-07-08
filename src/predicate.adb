@@ -207,16 +207,21 @@ package body Predicate is
                   --borde vara precis som för when A_Function_Call?:
                   null;
                when Not_An_Operator =>
-                  Trace("predicate.adb : Not_An_Operator: ", N.Data.Element);
+                  Trace("Error: predicate.adb : Not_An_Operator: ", N.Data.Element);
             end case;
          when A_Parenthesized_Expression =>
             Result := Eval(N.Right);
          when A_Function_Call =>
             --TODO: Fail?
             Result := N.Data.Value;
+         when An_In_Membership_Test | A_Not_In_Membership_Test =>
+            Result := N.Data.Value;
+         when An_And_Then_Short_Circuit | An_Or_Else_Short_Circuit =>
+            Result := N.Data.Value;
+            Trace("Warning: predicate.adb : short circuits might have strange side effects:", N.Data.Element);
          when others =>
             Result := N.Data.Value;
-            Trace("predicate.adb : complicated_clause: ", N.Data.Element);
+            Trace("Error: predicate.adb : complicated_clause?: ", N.Data.Element);
       end case;
       return Result;
    end Eval;

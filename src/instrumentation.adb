@@ -940,7 +940,7 @@ package body Instrumentation is
             --Put_Line("--No declarative items!");
             --Put_Line("-->Insert RORGCover after:" & Natural'Wide_Image(First_Line_Number(Stmt)));
             Expr_Span := Element_Span(Stmt);
-            Ada.Text_IO.Put_Line(Ada.Text_IO.Standard_Error, "First_Line: '" & To_String(Integer'Wide_Image(Expr_Span.First_Line)) & "'");
+            --Ada.Text_IO.Put_Line(Ada.Text_IO.Standard_Error, "First_Line: '" & To_String(Integer'Wide_Image(Expr_Span.First_Line)) & "'");
             Instrumentation.Push_Insertion_Point(Expr_Span.First_Line,Expr_Span.First_Column+INDENT_SIZE);
             --Instrumentation.PushInsertionPoint(First_Line_Number(Stmt),1);
          else
