@@ -81,6 +81,9 @@ package body Framework is
             case Expression_Kind (Element) is
                when Not_An_Expression =>
                   null;
+	       when A_Box_Expression =>
+		  Trace("Error: framework.adb : Wierd stuff: ", Element);
+                  Element_Processing.Process_Unknown_Element(Element);
                when An_Integer_Literal |
                  A_Real_Literal |
                  A_String_Literal |
@@ -120,6 +123,9 @@ package body Framework is
                   Element_Processing.Process_Literal (Element);
                when A_Parenthesized_Expression =>
                   null;
+	       when A_Raise_Expression =>
+		  Trace("Error: framework.adb : Wierd stuff: ", Element);
+                  Element_Processing.Process_Unknown_Element(Element);
                when A_Type_Conversion =>
                   Element_Processing.Process_Complicated_Element(Element);
                when A_Qualified_Expression =>
