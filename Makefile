@@ -126,6 +126,6 @@ expr_10:
 	gnatchop -w expr_10.ror
 
 clean:	clean_debug
-	- ${RM} -rf src/*.o src/*.ali src/b~*
+	- ${RM} -rf obj/* src/*.o src/*.ali src/b~*
 clean_debug:
 	- ${RM} -rf *coverage.dat *.adt *.ror filelist.dat

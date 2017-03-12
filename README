@@ -29,7 +29,7 @@ Make sure to have the same version of GNAT and ASIS. The version used for runnin
 Using Debian
 ------------
 Gnat, ASIS and GPRbuild can be installed using Debian packages:
-  sudo apt-get gnat libasis2014-dev gprbuild
+  sudo apt-get install gnat libasis2015-dev gprbuild
 
 Build with project file
 -----------------------
